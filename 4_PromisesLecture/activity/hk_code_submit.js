@@ -1,8 +1,8 @@
 let puppeteer = require("puppeteer");
-// let {email, password} = require("C:\Users\asus.LAPTOP-F97U0B83\Desktop\webdev PP\4_PromisesLecture\secret.js");
+let {email, pass} = require("./secret");
+let {codes} = require("./code")
 let gtab;
-let email ="besopo1380@aramidth.com";
-let pass ="12345678";
+
 
 console.log("Before");
 
@@ -52,7 +52,14 @@ browserPromise
 
         // ]);
         return warmupChallengeWillBeClickedCombinedPromise;
-    }).catch(function(err){
+    }).then(function(){
+        let url = gtab.url();
+        console.log(url);
+        let quesObj = codes[0];
+        questionSolver(url, quesObj.soln, quesObj.qName);
+
+    })
+    .catch(function(err){
         console.log(err);
     })
 
@@ -68,7 +75,90 @@ browserPromise
         })
     }
 
+    // questionName->appear->click
+    // read 
+    // copy 
+    // paste 
+    // submit
+    //Remenber You cannot write the code in editor hme copy paste krni h
 
+    function questionSolver(modulepageUrl, code, questionName) {
+        return new Promise(function (resolve, reject) {
+            // page visit 
+            let reachedPageUrlPromise = gtab.goto(modulepageUrl);
+            reachedPageUrlPromise
+                .then(function () {
+                    //  page h4 -> mathcing h4 -> click
+                    // function will exceute inside the browser
+                    function browserconsolerunFn(questionName) {
+                        let allH4Elem = document.querySelectorAll("h4");
+                        let textArr = [];
+                        for (let i = 0; i < allH4Elem.length; i++) {
+                            let myQuestion = allH4Elem[i]
+                                .innerText.split("\n")[0];
+                            textArr.push(myQuestion);
+                        }
+                        let idx = textArr.indexOf(questionName);
+                        console.log(idx);
+                        console.log("hello");
+                        allH4Elem[idx].click();
+                    }
+                    let pageClickPromise = gtab.evaluate(browserconsolerunFn, questionName);
+                    return pageClickPromise;
+                })
+                .then(function () {
+                    // checkbox click
+                    let inputWillBeClickedPromise = waitAndClick(".custom-checkbox.inline");
+                    return inputWillBeClickedPromise;
+                }).then(function () {
+                    // type `
+                    let codeWillBeTypedPromise = gtab.type(".custominput", code);
+                    return codeWillBeTypedPromise;
+                }).then(function () {
+                    let controlIsHoldPromise = gtab.keyboard.down("Control");
+                    return controlIsHoldPromise;
+                }).then(function () {
+                    // ctrl a
+                    let aisPressedpromise = gtab.keyboard.press("a");
+                    return aisPressedpromise;
+                    // ctrl x
+                }).then(function () {
+                    let cutPromise = gtab.keyboard.press("x");
+                    return cutPromise;
+                })
+                .then(function () {
+                    let editorWillBeClickedPromise = gtab.click(".monaco-editor.no-user-select.vs");
+                    return editorWillBeClickedPromise;
+                })
+    
+                .then(function () {
+                    // ctrl a
+                    let aisPressedpromise = gtab.keyboard.press("a");
+                    return aisPressedpromise;
+                    // ctrl x
+                })
+                .then(function () {
+                    let pastePromise = gtab.keyboard.press("v");
+                    return pastePromise;
+                })
+                .then(function () {
+                    let submitIsClickedPromise = gtab.click(".pull-right.btn.btn-primary.hr-monaco-submit");
+                    return submitIsClickedPromise;
+                })
+                // ctrlv
+                // submit
+                .then(function () {
+                    resolve();
+                }).catch(function () {
+                    reject(err);
+                })
+            // questionName-> appear -> click
+            // read 
+            // copy
+            // paste
+            // submit 
+        })
+    }
 
     // }).then(function(){
     //     let quesCombinedPromise = Promise.all([
@@ -80,7 +170,6 @@ browserPromise
     //     let quesSolverPromise = quesSolver();
     //     return quesSolverPromise;
     // })
-console.log("After");``
 // .then(function(){
 //     console.log("warmup Challenges opened");
 // }).catch(function(err){
