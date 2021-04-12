@@ -56,8 +56,15 @@ browserPromise
         let url = gtab.url();
         console.log(url);
         let quesObj = codes[0];
-        questionSolver(url, quesObj.soln, quesObj.qName);
-
+        let fqsp=questionSolver(url, quesObj.soln, quesObj.qName);
+        for(let i=1;i<codes.length;i++){
+            fqsp =fqsp.then(function(){
+                return questionSolver(url,codes[i].soln, codes[i].qName)
+            })
+        }
+        return fqsp;
+    }).then(function(){
+        console.log("All ques submitted");
     })
     .catch(function(err){
         console.log(err);
