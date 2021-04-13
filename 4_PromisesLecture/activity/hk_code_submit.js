@@ -78,6 +78,8 @@ browserPromise
                 return selectorClickPromise;
             }).then(function(){
                 resolve();
+            }).catch(function(err){
+                reject(err);
             })
         })
     }
