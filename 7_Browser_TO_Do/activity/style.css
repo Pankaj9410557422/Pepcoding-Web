@@ -1,0 +1,112 @@
+
+*{
+    box-sizing: border-box;
+}
+body{
+    margin:0 auto;
+}
+.toolbar{
+    background-color: rgb(61, 49, 49);
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    padding-left: 5rem;
+
+
+}
+.pink{
+    background-color: pink;
+}
+.blue{
+    background-color: rgb(54, 131, 231);
+}
+.black{
+    background-color: rgb(59, 55, 55);
+}
+.green{
+    background-color: rgb(53, 189, 53);
+}
+.filter-container{
+    height:3rem;
+    width: 14rem;
+    margin-right: 4rem;
+    border-radius: 0.2rem;
+    background-color: rgb(100, 53, 53);
+    display:flex;
+    justify-content: space-around;
+}
+.filter{
+    height:100%;
+    width:25%;
+    /*border: 1px solid red;*/
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+.filter_color{
+    height:40%;
+    width:40%;
+    border-radius: 0.1rem;
+    /* border:1px solid red; */  
+}
+.action-container{
+    height:50%;
+    width:8rem;
+    background-color: rgb(100,53,53);
+    border-radius: 0.2rem;
+    display:flex;
+    border-radius: 0.2rem solid;
+}
+.icon-container{
+    width:50%;
+    /* border:1px solid red; */
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* icons are treates  as text */
+.fa{
+    font-size:1.5rem;
+}
+.main_container{
+    height: 85vh;
+}
+/* modal */
+.modal_container{
+    position:absolute;
+    height:16rem;
+    width:35rem;
+    background-color: brown;
+    left:1rem;
+    top:30vh;
+    display:flex;
+    box-shadow: 0 1rem 3rem rgba(0, 0,0.90);
+}
+.input_container{
+    height:100%;
+    width:73%;
+}
+.modal_filter_container{
+    width:27%;
+    background-color: #444;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding:2rem 1.2rem;
+}
+.modal_filter_container>.filter{
+    height:15%;
+    width:60%;
+}
+.modal-input{
+    height: 100%;
+    width:100%;
+    outline:none;
+    padding: 2rem 3rem;
+    font-family: "Raleway" sans-serif;
+    font-size: 1.5rem;
+    line-height:145%;
+    font-weight: 400;
+}
