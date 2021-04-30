@@ -4,6 +4,8 @@
 }
 body{
     margin:0 auto;
+    font-family: "Raleway" sans-serif;
+    background-color: #ecf0f1;
 }
 .toolbar{
     background-color: rgb(61, 49, 49);
@@ -69,8 +71,8 @@ body{
 .fa{
     font-size:1.5rem;
 }
-.main_container{
-    height: 85vh;
+.active{
+    background-color: #474a4b;
 }
 /* modal */
 .modal_container{
@@ -78,7 +80,7 @@ body{
     height:16rem;
     width:35rem;
     background-color: brown;
-    left:1rem;
+    left:calc((100vw - 35rem)/2);
     top:30vh;
     display:flex;
     box-shadow: 0 1rem 3rem rgba(0, 0,0.90);
@@ -86,6 +88,16 @@ body{
 .input_container{
     height:100%;
     width:73%;
+}
+.modal_input{
+    height: 100%;
+    width:100%;
+    outline:none;
+    padding: 2rem 3rem;
+    font-family: "Raleway" sans-serif;
+    font-size: 1.5rem;
+    line-height:145%;
+    font-weight: 400;
 }
 .modal_filter_container{
     width:27%;
@@ -100,13 +112,42 @@ body{
     height:15%;
     width:60%;
 }
-.modal-input{
-    height: 100%;
-    width:100%;
-    outline:none;
-    padding: 2rem 3rem;
-    font-family: "Raleway" sans-serif;
-    font-size: 1.5rem;
-    line-height:145%;
-    font-weight: 400;
+.border{
+    border:0.2rem solid white;
 }
+/* task css */
+.main_container{
+    height:80vh;
+    overflow: auto;
+    padding-top:2rem;
+    padding-left:3rem;
+    display:flex;
+    justify-content:space-evenly;
+    flex-wrap:wrap;
+}
+.task_container{
+    height:8rem;
+    width:12rem;
+    background-color: #fff;
+}
+.task_filter{
+    height:7%;
+    
+}
+.task_desc_container{
+    height: 80%;
+    padding-left: 0.5rem;
+}
+.task_desc{
+    height:70%;
+    text-align:center;
+    overflow-y: auto;
+    /* agar bda word ho to single line ki tarah treat krta h usko resolve krne ko */
+    word-break: break-all;
+}
+.uid{
+    color: #444;
+    margin-bottom:0.1rem;
+}
+
+
