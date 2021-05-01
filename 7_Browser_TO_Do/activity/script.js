@@ -5,6 +5,15 @@ let body=document.body;
 let plusButton=document.querySelector(".fa-plus");
 let crossBtn = document.querySelector(".fa-times");
 let delState=false;
+let taskArr=[];
+if(localStorage.getItem("allTask")){
+    let stringArr= localStorage.getItem("allTask");
+    taskArr = JSON.parse(stringArr);
+    for(let i=0;i<taskArr.length;i++){
+        let{id ,color,task}=taskArr[i];
+        createTask(color, task, false,id);
+    }
+}
 
 
 // for(let i=0; i<colorBtn.length;i++){
@@ -65,15 +74,15 @@ function handleModal(modal_container){
             //remove modal
             modal_container.remove();
             //create taskBox
-            createTask(cColor, textArea.value);
+            createTask(cColor, textArea.value,true);
         }
     })
 }
 
-function createTask(color, task){
+function createTask(color, task, flag,id){
     // color area click-> among colors
     let taskContainer = document.createElement("div");
-    let uid = new ShortUniqueId();
+    let uid = id || new ShortUniqueId();
     taskContainer.setAttribute("class", "task_container");
     taskContainer.innerHTML = `<div class="task_filter ${color}"></div>
     <div class="task_desc_container">
@@ -83,6 +92,12 @@ function createTask(color, task){
 </div >`;
     mainContainer.appendChild(taskContainer);
     let taskFilter = taskContainer.querySelector(".task_filter");
+    if(flag==true){
+        let obj={"task":task,"id":uid,"color":color};
+        taskArr.push(obj);
+        let finalArr = JSON.stringify(taskArr);
+        localStorage.setItem("allTask",finalArr);
+    }
     console.log(taskFilter);
     taskFilter.addEventListener("click", changeColor);
     taskContainer.addEventListener("click",deleteTask);
