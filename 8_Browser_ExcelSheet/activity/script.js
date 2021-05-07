@@ -1,8 +1,12 @@
 let addbtnContainer=document.querySelector(".add-sheet-container");
 let sheetList=document.querySelector(".sheets-list");
 let firstSheet = document.querySelector(".sheet");
-let Allcells = document.querySelector(".grid .col");
-let addressBar = document.querySelector(".address-box")
+let Allcells = document.querySelectorAll(".grid .col");
+let addressBar = document.querySelector(".address-box");
+let leftBtn = document.querySelector(".left");
+let rightBtn = document.querySelector(".right");
+let centerBtn = document.querySelector(".center");
+let fontBtn = document.querySelector(".font-size");
 
 
 
@@ -45,7 +49,41 @@ for(let i=0; i<Allcells.length;i++){
         
         let address = colAdd+rowAdd;
         addressBar.value = address;
-    })
+    });
+}
+rightBtn.addEventListener("click", function () {
+    let address = addressBar.value;
+    let { rid, cid } = getRIdCIdfromAddress(address);
+    console.log(rid, cid);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    cell.style.textAlign = "right"
+})
+centerBtn.addEventListener("click", function () {
+    let address = addressBar.value;
+    let { rid, cid } = getRIdCIdfromAddress(address);
+    console.log(rid, cid);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    cell.style.textAlign = "center"
+})
+
+fontBtn.addEventListener("change", function () {
+    let fontSize = fontBtn.value;
+    let address = addressBar.value;
+    let { rid, cid } = getRIdCIdfromAddress(address);
+    console.log(rid, cid);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    console.log(fontSize);
+    cell.style.fontSize = fontSize+"px";
+})
+function getRIdCIdfromAddress(adress) {
+    // A1
+    let cellColAdr = adress.charCodeAt(0);
+    // console.log(cellColAdr);
+    let cellrowAdr = adress.slice(1);
+    let cid = cellColAdr - 65;
+    let rid = Number(cellrowAdr) - 1;
+    return { cid, rid };
+
 }
 Allcells[0].click();
 
