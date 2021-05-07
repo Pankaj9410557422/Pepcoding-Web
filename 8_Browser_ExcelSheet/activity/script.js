@@ -1,6 +1,11 @@
 let addbtnContainer=document.querySelector(".add-sheet-container");
 let sheetList=document.querySelector(".sheets-list");
 let firstSheet = document.querySelector(".sheet");
+let Allcells = document.querySelector(".grid .col");
+let addressBar = document.querySelector(".address-box")
+
+
+
 firstSheet.addEventListener("click",handleActiveSheet)
 
 addbtnContainer.addEventListener("click",function(){
@@ -28,28 +33,22 @@ function handleActiveSheet(e){
         MySheet.classList.add("active-sheet");
     }
 }
-let topRow = document.querySelector(".top-row");
-let str="";
-for(let i=0; i<26;i++){
-    str+=`<div class='col'>${String.fromCharCode(65+i)}</div>`
+// formula
+for(let i=0; i<Allcells.length;i++){
+    Allcells[i].addEventListener("click", function handleCell(){
+        let rid= Number(Allcells[i].getAttribute("rid"));
+        let cid = Number(Allcells[i].getAttribute("cid"));
+
+        let rowAdd = rid+1;
+        let colAdd = String.fromCharCode(cid+65);
+        console.log(rowAdd);
+        
+        let address = colAdd+rowAdd;
+        addressBar.value = address;
+    })
 }
-topRow.innerHTML=str;
-let leftCol = document.querySelector(".left-col");
-str="";
-for(let i=0; i<100;i++){
-    str+=`<div class='left-col_box'>${i+1}</div>`
-}
-leftCol.innerHTML=str;
-//2d array 
-//formula to finr row col ->${String.fromCharCode(65 + j)}${i + 1}    isko neeche div k andr daal kr dekh
-let grid = document.querySelector(".grid");
-        str = "";
-        for (let i = 0; i < 100; i++) {
-            str += `<div class="row">`
-            for (let j = 0; j < 26; j++) {
-                str += `<div class='col'></div>`
-            }
-            str += "</div>";
-        }
-grid.innerHTML = str;
+Allcells[0].click();
+
+
+
 

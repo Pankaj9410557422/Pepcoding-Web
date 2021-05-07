@@ -8,48 +8,90 @@ body{
 .menu-container{
     background-color: lightblue;
     height:80px;
-}
-.formula-container{
-    background-color: lightgrey;
-    height:30px;
-}
-.grid{
-    height: calc(100vh - (80px + 30px + 30px));
-}
-.sheets{
-    height: 30px;
-    background-color: lightgray;
-    display: flex;
-    /* overflow-x: auto ;
-    min-width: calc(100vh - 30px); */
-}
-
-.add-sheet-container{
-    height:100%;
-    width:30px;
-    border:1px solid gray;
     display:flex;
+    align-items: center;
+}
+/* future k liye */
+.menu-container>*{
+    height:80%;
+    width:20%;
+    border-right: 2px solid;
+}
+.alignment-container{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+.alignment-container>*{
+    width:20%;
+}
+.formatting-container{
+    display:flex;
+    justify-content: space-around;
+}
+/* inline input type element pr ja kr styling set krni padti h . */
+ .subgroup{
+    width:45%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly ;
+ }
+ .subgroup>*{
+     width:100%;
+ }
+.BUI-container{
+    display: flex;
+    justify-content: space-between;
+}
+.BUI-container>*{
+    width:30%;
+}
+.color-container>*{
+    width:45%;
+}
+.color-container{
+    display: flex;
+    justify-content: space-between;
+}
+.alignment-container{
+    display: flex;
     justify-content: center;
     align-items: center;
 }
-.icon{
-    font: 1.2rem;
-    color:rgb(68, 145, 68);
+.alignment-container>*{
+    width:20%;
 }
-.sheets-list{
-    height:100%;
+
+
+
+
+
+
+/* formula container styling  */
+.formula-container{
+    background-color: lightgrey;
+    height:30px;
     display:flex;
-    
-}
-.sheet{
-    width:60px;
-    height:100%;
-    display:flex;
-    justify-content:center;
+    justify-content: space-evenly;
     align-items: center;
 }
-.active-sheet{
-    background-color: white;
+.address-box{
+    width:10%
+}
+.separator{
+    width:2%;
+}
+.formula-box{
+    width:80%;
+}
+
+
+
+
+/* grid wla code  */
+.grid{
+    height: calc(100vh - (80px + 30px + 30px));
 }
 .top-left-block {
     height: 30px;
@@ -97,4 +139,45 @@ body{
     background-color: lightgreen;
     text-align: center;
     border: 1px solid;
+}
+
+
+
+
+/* add sheets wala code  */
+.sheets{
+    height: 40px;
+    background-color: lightgray;
+    display: flex;
+    /* overflow-x: auto ;
+    min-width: calc(100vh - 30px); */
+}
+
+.add-sheet-container{
+    height:100%;
+    min-width:30px;
+    border:1px solid gray;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon{
+    font: 1.2rem;
+    color:rgb(68, 145, 68);
+}
+.sheets-list{
+    height:100%;
+    display:flex;
+    overflow-x:auto;
+    
+}
+.sheet{
+    width:60px;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+.active-sheet{
+    background-color: white;
 }
