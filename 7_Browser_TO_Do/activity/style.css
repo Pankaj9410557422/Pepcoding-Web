@@ -48,7 +48,7 @@ body{
 .filter_color{
     height:40%;
     width:40%;
-    border-radius: 0.1rem;
+    border-radius: 0.3rem;
     /* border:1px solid red; */  
 }
 .action-container{

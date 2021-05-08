@@ -7,11 +7,15 @@ let leftBtn = document.querySelector(".left");
 let rightBtn = document.querySelector(".right");
 let centerBtn = document.querySelector(".center");
 let fontBtn = document.querySelector(".font-size");
+let fontFamily = document.querySelector(".font-family");
+let boldElem = document.querySelector(".bold");
+let italicElem = document.querySelector(".italic");
+let underlineElem = document.querySelector(".underline");
 
 
 
 firstSheet.addEventListener("click",handleActiveSheet)
-
+//create sheets and give them functionality
 addbtnContainer.addEventListener("click",function(){
     let sheetsArr= document.querySelectorAll(".sheet");
     console.log(sheetsArr);
@@ -37,7 +41,9 @@ function handleActiveSheet(e){
         MySheet.classList.add("active-sheet");
     }
 }
-// formula
+
+// *****************************************************
+// adress set krta h on click of a cell formula container m
 for(let i=0; i<Allcells.length;i++){
     Allcells[i].addEventListener("click", function handleCell(){
         let rid= Number(Allcells[i].getAttribute("rid"));
@@ -45,25 +51,38 @@ for(let i=0; i<Allcells.length;i++){
 
         let rowAdd = rid+1;
         let colAdd = String.fromCharCode(cid+65);
-        console.log(rowAdd);
+        // console.log(rowAdd);
         
         let address = colAdd+rowAdd;
         addressBar.value = address;
     });
 }
+// initial cell k click ko emmulate krne k liye 
+Allcells[0].click();
+
+
+// ******************************formatting**************** 
+ 
+leftBtn.addEventListener("click", function () {
+    let address = addressBar.value;
+    let { rid, cid } = getRIdCIdfromAddress(address);
+    console.log(rid, cid);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    cell.style.textAlign = "left";
+})
 rightBtn.addEventListener("click", function () {
     let address = addressBar.value;
     let { rid, cid } = getRIdCIdfromAddress(address);
     console.log(rid, cid);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-    cell.style.textAlign = "right"
+    cell.style.textAlign = "right";
 })
 centerBtn.addEventListener("click", function () {
     let address = addressBar.value;
     let { rid, cid } = getRIdCIdfromAddress(address);
     console.log(rid, cid);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-    cell.style.textAlign = "center"
+    cell.style.textAlign = "center";
 })
 
 fontBtn.addEventListener("change", function () {
@@ -75,6 +94,62 @@ fontBtn.addEventListener("change", function () {
     console.log(fontSize);
     cell.style.fontSize = fontSize+"px";
 })
+fontFamily.addEventListener("change", function () {
+    let address = addressBar.value;
+    let { rid, cid } = getRIdCIdfromAddress(address);
+    // console.log(rid, cid);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    // console.log(fontSize);
+    let cFont = fontFamily.value;
+    cell.style.fontFamily = cFont;
+})
+boldElem.addEventListener("click", function(){
+    let isActive = boldElem.classList.contains("active-btn");
+    let address = addressBar.value;
+    let {rid, cid} = getRIdCIdfromAddress(address);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    if(isActive == false){
+        // ceel text bold 
+        cell.style.fontWeight ="bold";
+        boldElem.classList.add("active-btn");
+    }else{
+        cell.style.fontWeight="normal";
+        boldElem.classList.remove("active-btn");
+    }
+})
+italicElem.addEventListener("click", function(){
+    let isActive = italicElem.classList.contains("active-btn");
+    let address = addressBar.value;
+    let {rid, cid} = getRIdCIdfromAddress(address);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    if(isActive == false){
+        // ceel text bold 
+        cell.style.fontWeight ="bold";
+        italicElem.classList.add("active-btn");
+    }else{
+        cell.style.fontWeight="normal";
+        italicElem.classList.remove("active-btn");
+    }
+})
+underlineElem.addEventListener("click", function(){
+    let isActive = underlineElem.classList.contains("active-btn");
+    let address = addressBar.value;
+    let {rid, cid} = getRIdCIdfromAddress(address);
+    let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    if(isActive == false){
+        // ceel text bold 
+        cell.style.textDecoration ="underline";
+        underlineElem.classList.add("active-btn");
+    }else{
+        cell.style.textDecoration="none";
+        underlineElem.classList.remove("active-btn");
+    }
+})
+
+
+
+// ******************************* 
+//formatting
 function getRIdCIdfromAddress(adress) {
     // A1
     let cellColAdr = adress.charCodeAt(0);
@@ -85,7 +160,7 @@ function getRIdCIdfromAddress(adress) {
     return { cid, rid };
 
 }
-Allcells[0].click();
+
 
 
 

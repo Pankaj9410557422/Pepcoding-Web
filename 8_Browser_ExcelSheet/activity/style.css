@@ -29,6 +29,9 @@ body{
     display:flex;
     justify-content: space-around;
 }
+.active-btn{
+    background-color:rgb(110, 104, 104)
+}
 /* inline input type element pr ja kr styling set krni padti h . */
  .subgroup{
     width:45%;
