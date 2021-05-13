@@ -11,6 +11,7 @@ let fontFamily = document.querySelector(".font-family");
 let boldElem = document.querySelector(".bold");
 let italicElem = document.querySelector(".italic");
 let underlineElem = document.querySelector(".underline");
+let allAlignmentBtns = document.querySelectorAll(".alignment-container>*");
 
 
 
@@ -55,6 +56,35 @@ for(let i=0; i<Allcells.length;i++){
         
         let address = colAdd+rowAdd;
         addressBar.value = address;
+        let cellObj = sheetDB[rid][cid];
+        if(cellObj.bold==true){
+            boldElem.classList.add("active-btn");
+        }else{
+            boldElem.classList.remove("active-btn");
+        }
+        if(cellObj.italic ==true){
+            italicElem.classList.add("active-btn");
+        }else{
+            italicElem.classList.remove("active-btn");
+        }
+        if(cellObj.underline == true){
+            underlineElem.classList.add("active-btn");
+        }else{
+            underlineElem.classList.remove("active-btn");
+        }
+
+
+        //allignment
+        for(let i=0;i<allAlignmentBtns.length;i++){
+            allAlignmentBtns[i].classList.remove("active-btn");
+        }
+        if(cellObj.halign=="left"){
+            leftBtn.classList.add("active-btn");
+        }else if(cellObj.halign=="right"){
+            rightBtn.classList.add("active-btn");
+        }else if(cellObj.halign="center"){
+            centerBtn.classList.add("active-btn");
+        }
     });
 }
 // initial cell k click ko emmulate krne k liye 
@@ -68,21 +98,39 @@ leftBtn.addEventListener("click", function () {
     let { rid, cid } = getRIdCIdfromAddress(address);
     console.log(rid, cid);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    let cellObj = sheetDB[rid][cid];
     cell.style.textAlign = "left";
+    for(let i=0; i<allAlignmentBtns.length;i++){
+        allAlignmentBtns[i].classList.remove("active-btn");
+    }
+    leftBtn.classList.add("active-btn");
+    cellObj.halign="left";
 })
 rightBtn.addEventListener("click", function () {
     let address = addressBar.value;
     let { rid, cid } = getRIdCIdfromAddress(address);
     console.log(rid, cid);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    let cellObj = sheetDB[rid][cid];
     cell.style.textAlign = "right";
+    for(let i=0; i<allAlignmentBtns.length;i++){
+        allAlignmentBtns[i].classList.remove("active-btn");
+    }
+    rightBtn.classList.add("active-btn");
+    cellObj.halign = "right";
 })
 centerBtn.addEventListener("click", function () {
     let address = addressBar.value;
     let { rid, cid } = getRIdCIdfromAddress(address);
     console.log(rid, cid);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    let cellObj = sheetDB[rid][cid];
     cell.style.textAlign = "center";
+    for(let i=0; i<allAlignmentBtns.length;i++){
+        allAlignmentBtns[i].remove("active-btns");
+    }
+    centerBtn.classList.add("active-btn");
+    cellObj.halign="center";
 })
 
 fontBtn.addEventListener("change", function () {
@@ -94,6 +142,7 @@ fontBtn.addEventListener("change", function () {
     console.log(fontSize);
     cell.style.fontSize = fontSize+"px";
 })
+
 fontFamily.addEventListener("change", function () {
     let address = addressBar.value;
     let { rid, cid } = getRIdCIdfromAddress(address);
@@ -103,48 +152,63 @@ fontFamily.addEventListener("change", function () {
     let cFont = fontFamily.value;
     cell.style.fontFamily = cFont;
 })
+
+
 boldElem.addEventListener("click", function(){
     let isActive = boldElem.classList.contains("active-btn");
     let address = addressBar.value;
     let {rid, cid} = getRIdCIdfromAddress(address);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    let cellObj = sheetDB[rid][cid];
     if(isActive == false){
-        // ceel text bold 
+        // cell text bold 
         cell.style.fontWeight ="bold";
         boldElem.classList.add("active-btn");
+        cellObj.bold=true;
     }else{
         cell.style.fontWeight="normal";
         boldElem.classList.remove("active-btn");
+        cellObj.bold=false;
     }
+    console.log(sheetDB);
 })
+
 italicElem.addEventListener("click", function(){
     let isActive = italicElem.classList.contains("active-btn");
     let address = addressBar.value;
     let {rid, cid} = getRIdCIdfromAddress(address);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    cellObj=sheetDB[rid][cid];
     if(isActive == false){
-        // ceel text bold 
-        cell.style.fontWeight ="bold";
+        // ceel text italic
+        cell.style.fontStyle ="italic";
         italicElem.classList.add("active-btn");
+        cellObj.italic = true;
     }else{
-        cell.style.fontWeight="normal";
+        cell.style.fontStyle="normal";
         italicElem.classList.remove("active-btn");
+        cellObj.italic = false;
     }
 })
+
 underlineElem.addEventListener("click", function(){
     let isActive = underlineElem.classList.contains("active-btn");
     let address = addressBar.value;
     let {rid, cid} = getRIdCIdfromAddress(address);
     let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+    cellObj=sheetDB[rid][cid];
     if(isActive == false){
-        // ceel text bold 
+        // cell text underline
         cell.style.textDecoration ="underline";
         underlineElem.classList.add("active-btn");
+        cellObj.underline=true;
     }else{
         cell.style.textDecoration="none";
         underlineElem.classList.remove("active-btn");
+        cellObj.underline = false;
     }
 })
+
 
 
 

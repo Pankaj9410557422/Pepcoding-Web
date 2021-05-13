@@ -22,3 +22,26 @@ let grid = document.querySelector(".grid");
             str += "</div>";
         }
 grid.innerHTML = str;
+
+
+//save data of sheet so that in switching sheets will help switch data
+let sheetDB =[];
+for(let i=0;i<100;i++){
+    let row=[];
+    for(let j=0;j<26;j++){
+        let cell={
+            bold:false,
+            italic:false,
+            underline:false,
+            fontFamily:"Arial",
+            fontSize:"10",
+            halign:"left"
+        }
+        row.push(cell);
+        //formatting ,text
+    }
+    sheetDB.push(row);
+}
+console.log(sheetDB);
+
+//2d Array ->styling save
