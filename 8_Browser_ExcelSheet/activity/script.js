@@ -12,35 +12,50 @@ let boldElem = document.querySelector(".bold");
 let italicElem = document.querySelector(".italic");
 let underlineElem = document.querySelector(".underline");
 let allAlignmentBtns = document.querySelectorAll(".alignment-container>*");
-
+let sheetDB=workSheetDB[0];
 
 
 firstSheet.addEventListener("click",handleActiveSheet)
 //create sheets and give them functionality
 addbtnContainer.addEventListener("click",function(){
     let sheetsArr= document.querySelectorAll(".sheet");
-    console.log(sheetsArr);
+    // console.log(sheetsArr);
     let lastSheetElem= sheetsArr[sheetsArr.length-1];
     let idx= lastSheetElem.getAttribute("sheetIdx");
     idx=Number(idx);
     let NewSheet= document.createElement("div");
     NewSheet.setAttribute("class","sheet");
     NewSheet.setAttribute("sheetIdx",idx+1);
-    NewSheet.innerHTML=`Sheet ${idx+1}`;
+    NewSheet.innerText=`Sheet ${idx+1}`;
     //page add
     sheetList.appendChild(NewSheet);
+    
+
+    //set active
+    sheetsArr.forEach(function(sheet){
+        sheet.classList.remove("active-sheet");
+    })
+    sheetsArr=document.querySelectorAll(".sheet");
+    sheetsArr[sheetsArr.length-1].classList.add("active-sheet");
+    initCurrentSheetDB();
+    sheetDB=workSheetDB[idx];
+    initUI();
     NewSheet.addEventListener("click", handleActiveSheet);
 })
 
 function handleActiveSheet(e){
-    let MySheet= e.currenTarget;
+    let MySheet= e.currentTarget;
     let sheetsArr= document.querySelectorAll(".sheet");
+
     sheetsArr.forEach(function(sheet){
         sheet.classList.remove("active-sheet");
     })
     if(!MySheet.classList[1]){
         MySheet.classList.add("active-sheet");
     }
+    let sheetindex=MySheet.getAttribute("sheetIdx");
+    sheetDB=workSheetDB[sheetindex-1];
+    setUI(sheetDB);
 }
 
 // *****************************************************
@@ -224,7 +239,41 @@ function getRIdCIdfromAddress(adress) {
     return { cid, rid };
 
 }
+function initUI(){
+    for(let i=0; i<Allcells.length;i++){
+        Allcells[i].innerHTML="";
+        Allcells[i].style.fontWeight="normal";
+        Allcells[i].style.fontStyle="normal";
+        Allcells[i].style.textDecoration="none";
+        Allcells[i].style.fontFamily="Arial";
+        Allcells[i].style.fontSize="10px";
+        Allcells[i].style.textAlign="left";
+        Allcells[i].style.innerText="";
+    }
+}
+for(let i=0; i<Allcells.length;i++){
+    Allcells[i].addEventListener("blur", function handle(){
+        let address = addressBar.value;
+        let {rid, cid} = getRIdCIdfromAddress(address);
+        let cellObject = sheetDB[rid][cid];
+        let cell = document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+        cellObject.value=cell.innerText;
+    })
+}
+function setUI(sheetDB){{
+    for(let i=0; i<sheetDB.length;i++){
+        for(let j=0; j<sheetDB[i].length;j++){
+            let cell = document.querySelector(`.col[rid="${i}"][cid="${j}"]`);
+            let {bold, italic, underline, fontFamily,fontSize, halign, value} = sheetDB[i][j];
+            cell.style.fontWeight=bold==true?"bold":"normal";
+            cell.style.fontStyle=italic==true?"italic":"normal";
+            cell.style.textDecoration=underline==true?"underline":"none";
+            cell.innerText=value;
+        }
+    }
+}
 
+}
 
 
 

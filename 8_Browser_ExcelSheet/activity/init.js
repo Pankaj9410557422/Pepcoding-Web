@@ -25,6 +25,8 @@ grid.innerHTML = str;
 
 
 //save data of sheet so that in switching sheets will help switch data
+let workSheetDB =[];
+function initCurrentSheetDB(){
 let sheetDB =[];
 for(let i=0;i<100;i++){
     let row=[];
@@ -35,7 +37,8 @@ for(let i=0;i<100;i++){
             underline:false,
             fontFamily:"Arial",
             fontSize:"10",
-            halign:"left"
+            halign:"left",
+            value:""
         }
         row.push(cell);
         //formatting ,text
@@ -43,5 +46,8 @@ for(let i=0;i<100;i++){
     sheetDB.push(row);
 }
 console.log(sheetDB);
-
+workSheetDB.push(sheetDB);
+console.log(workSheetDB);
 //2d Array ->styling save
+}
+initCurrentSheetDB();
