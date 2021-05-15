@@ -12,7 +12,10 @@ let boldElem = document.querySelector(".bold");
 let italicElem = document.querySelector(".italic");
 let underlineElem = document.querySelector(".underline");
 let allAlignmentBtns = document.querySelectorAll(".alignment-container>*");
+
+let formulaInput = document.querySelector(".formula-box");
 let sheetDB=workSheetDB[0];
+
 
 
 firstSheet.addEventListener("click",handleActiveSheet)
@@ -229,16 +232,7 @@ underlineElem.addEventListener("click", function(){
 
 // ******************************* 
 //formatting
-function getRIdCIdfromAddress(adress) {
-    // A1
-    let cellColAdr = adress.charCodeAt(0);
-    // console.log(cellColAdr);
-    let cellrowAdr = adress.slice(1);
-    let cid = cellColAdr - 65;
-    let rid = Number(cellrowAdr) - 1;
-    return { cid, rid };
 
-}
 function initUI(){
     for(let i=0; i<Allcells.length;i++){
         Allcells[i].innerHTML="";
@@ -260,7 +254,7 @@ for(let i=0; i<Allcells.length;i++){
         cellObject.value=cell.innerText;
     })
 }
-function setUI(sheetDB){{
+function setUI(sheetDB){
     for(let i=0; i<sheetDB.length;i++){
         for(let j=0; j<sheetDB[i].length;j++){
             let cell = document.querySelector(`.col[rid="${i}"][cid="${j}"]`);
@@ -272,6 +266,63 @@ function setUI(sheetDB){{
         }
     }
 }
+
+// ********************************************formula code *************
+
+formulaInput.addEventListener("keydown", function(e){
+    if(e.key=="Enter" && formulaInput.value != ""){
+        let formula = formulaInput.value;
+        //get current cell
+        let evaluatedval = evaluateFormula(formula);
+        // alert(val);
+        //UI change
+        let address= addressBar.value;
+        let {rid, cid} = getRIdCIdfromAddress(address);
+        setUIByFormula(evaluatedval,rid,cid);
+        //db->works
+
+    }
+})
+function setUIByFormula(value, rid, cid){
+    document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`).innerText=value;
+    //add yourself as a children
+
+}
+
+function evaluateFormula(formula){
+    //"( A1 + A2 )"  -> spacing jaroori  h kyuki split karunga space k bases pr
+    // [( , A1, +, A2, )]
+    // database se ->A1, A2 ki value lekr aa 
+    //[(,10,+,20,)]
+    //infix evauation use karo
+    //(10, 20)
+    let formulaTokens=formula.split(" ");
+    for(let i=0; i<formulaTokens.length;i++){
+        let firstCharOfToken= formulaTokens[i].charCodeAt(0);
+        if(firstCharOfToken >=65 && firstCharOfToken <=90){
+            console.log(formulaTokens[i]);
+            let{rid,cid}=getRIdCIdfromAddress(formulaTokens[i]);
+            let cellObject = sheetDB[rid][cid];
+            let{value} = cellObject;
+            formula = formula.replace(formulaTokens[i],value);
+            // console.log(formula);
+        }
+    }
+    let ans = eval(formula);
+    return ans;
+
+}
+
+
+// **************************helper******************* 
+function getRIdCIdfromAddress(adress) {
+    // A1
+    let cellColAdr = adress.charCodeAt(0);
+    // console.log(cellColAdr);
+    let cellrowAdr = adress.slice(1);
+    let cid = cellColAdr - 65;
+    let rid = Number(cellrowAdr) - 1;
+    return { cid, rid };
 
 }
 
