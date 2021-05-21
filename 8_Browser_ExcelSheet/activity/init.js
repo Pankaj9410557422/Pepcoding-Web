@@ -38,7 +38,9 @@ for(let i=0;i<100;i++){
             fontFamily:"Arial",
             fontSize:"10",
             halign:"left",
-            value:""
+            value:"",
+            children:[],
+            formula: "",
         }
         row.push(cell);
         //formatting ,text
