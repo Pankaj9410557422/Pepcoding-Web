@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            margin: 0 auto;
+        }
+        .record-btn{
+            height: 5rem;
+            width: 5rem;
+            border-radius: 50%;
+            background-color: whitesmoke;
+            border: 0.1rem solid;
+            position: fixed;
+            left: 90vw;
+            top: 43vh;
+            z-index: 10;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-container{
+            height:100vh;
+            width:100vw;
+            background-color: black;
+        }
+        .video{
+            height:100%;
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video autoplay class="video" ></video>
+    </div>
+    <div class="record-btn">Record</div>
+    <script>
+        let videoPlayer = document.querySelector("video");
+        let recordBtn = document.querySelector(".record-btn");
+        let constraints = {
+            audio:true,
+            video:true
+        }
+        let mediaRecorder;
+        let state = false;
+        let chunks = [];
+        recordBtn.addEventListener("click",function(){
+            if(mediaRecorder!=undefined){
+                if(state==false){
+                state=true;
+                mediaRecorder.start();
+                recordBtn.innerText = "Recording...";
+            }else{
+                state = false;
+                mediaRecorder.stop();
+                recordBtn.innerText="Record";
+            }
+            }
+        })
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(function(mediaStream){
+            videoPlayer.srcObject=mediaStream;
+            mediaRecorder = new MediaRecorder(mediaStream);
+            mediaRecorder.ondataavailable=function(e){
+                chunks.push(e.data);
+            }
+            mediaRecorder.onstop = function(){
+                let blob = new Blob(chunks,{type:'video/mp4'});
+                chunks=[];
+                let blobURL = URL.createObjectURL(blob);
+                let link = document.createElement('a');
+                link.href = blobURL;
+                link.download='video.mp4';
+                link.click();
+                link.remove();
+
+            }  
+        }).catch(function(err){
+            console.log(err);
+        })
+    </script>
+    
+</body>
+</html>
