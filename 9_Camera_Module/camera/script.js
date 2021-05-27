@@ -60,6 +60,12 @@ capturebtn.addEventListener("click",function(){
     canvas.width=videoElem.videoWidth;
     canvas.height=videoElem.videoHeight;
     let tool = canvas.getContext("2d");
-    tool.drawImage(videoElem);
+    tool.drawImage(videoElem,0,0);
+    let link = document.createElement('a');
+    link.download="image.png";
+    link.href=canvas.toDataURL();
+    link.click();
+    link.remove();
+    canvas.remove();  
     
 })

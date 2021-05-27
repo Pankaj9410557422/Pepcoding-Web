@@ -10,12 +10,13 @@
             box-sizing: border-box;
         }
         body{
-            margin: 0px;
+            margin: 0 auto  ;
         }
         .parent{
             border: 2px solid;
-            height: 5rem;
-            width:60vw;
+            height: 10vh;
+            width:30vw;
+            margin:0 auto;
             display:flex;
             justify-content: space-evenly;
             align-items: center;
@@ -57,17 +58,9 @@
             //whenever you cahge the height of width of the canvas
             draw();
         })
-        let color="yellow";
-        red.addEventListener("click",function(){
-            color="red";
-        })
-        green.addEventListener("click",function(){
-            color="green";
-        })
-        blue.addEventListener("click",function(){
-            color="blue";
-        })
+        
         let tool = board.getContext("2d");
+        
         //color->black
         //paint
         draw();
@@ -77,11 +70,28 @@
             // tool.fillStyle ="lightgreen";
             // tool.fillRect(0,0,board.width/2,board.height/2);
             // //outline->stroke
+            
+            // tool.strokeRect(10,10,board.width/2,board.height/2);
+        let color="yellow";
+        tool.strokeStyle = color;
+        tool.lineWidth = 10;
+        red.addEventListener("click",function(){
+            let color="red";
             tool.strokeStyle = color;
             tool.lineWidth = 10;
-            // tool.strokeRect(10,10,board.width/2,board.height/2);
-        // }
-
+        })
+        green.addEventListener("click",function(){
+            let color="green";
+            tool.strokeStyle = color;
+            tool.lineWidth = 10;
+        })
+        blue.addEventListener("click",function(){
+            let color="blue";
+            tool.strokeStyle = color;
+            tool.lineWidth = 10;
+        })
+    
+        
         let isMouseDown = false;
         document.body.addEventListener("mousedown",function(e){
             let x= e.clientX;

@@ -35,6 +35,20 @@
             height:100%;
             width:100%;
         }
+        .click-btn{
+            height: 5rem;
+            width: 5rem;
+            border-radius: 50%;
+            background-color: whitesmoke;
+            border: 0.1rem solid;
+            position: fixed;
+            left: 90vw;
+            top: 60vh;
+            z-index: 10;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -42,9 +56,11 @@
         <video autoplay class="video" ></video>
     </div>
     <div class="record-btn">Record</div>
+    <div class="click-btn">Click</div>
     <script>
         let videoPlayer = document.querySelector("video");
         let recordBtn = document.querySelector(".record-btn");
+        let captureBtn = document.querySelector(".click-btn");
         let constraints = {
             audio:true,
             video:true
@@ -86,6 +102,23 @@
         }).catch(function(err){
             console.log(err);
         })
+        captureBtn.addEventListener("click",function(){
+            captureImg();
+        })
+        function captureImg(){
+            let canvas = document.createElement("canvas");
+            canvas.width = videoPlayer.videoWidth;
+            canvas.height=videoPlayer.videoHeight;
+            let tool =  canvas.getContext("2d");
+            tool.drawImage(videoPlayer,0,0);
+            let link = document.createElement('a');
+            link.download = "image.png";
+            link.href = canvas.toDataURL();
+            link.click();
+            link.remove();
+            c.remove();
+
+        }
     </script>
     
 </body>
