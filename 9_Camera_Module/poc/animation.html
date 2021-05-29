@@ -13,8 +13,8 @@
         }
         .box-1{
             background-color: red;
-            animation: scaleUp 5s;
-            animation-fill-mode: forwards;
+            animation: scaleUp 5s infinite;
+            /* animation-fill-mode: forwards; */
         }
         .box-2{
             background-color: blue;
@@ -59,6 +59,15 @@
         @keyframes fadeAway {
             0%{
                 opacity: 1;
+            }
+            25%{
+                opacity:0.75;
+            }
+            50%{
+                opacity:0.50;
+            }
+            75%{
+                opacity: 0.25;
             }
             100%{
                 opacity: 0;

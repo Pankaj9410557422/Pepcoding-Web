@@ -9,115 +9,260 @@
         *{
             box-sizing: border-box;
         }
-        body{
-            margin: 0 auto;
+        body
+        {
+            margin: 0;
         }
-        .record-btn{
-            height: 5rem;
-            width: 5rem;
-            border-radius: 50%;
-            background-color: whitesmoke;
-            border: 0.1rem solid;
+        #record-video
+        {
             position: fixed;
-            left: 90vw;
-            top: 43vh;
-            z-index: 10;
-            display:flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .video-container{
-            height:100vh;
-            width:100vw;
+            right: 6rem;
+            top: 36vh;
+            height: 6rem;
+            width: 6rem;
+            border-radius: 50%;
             background-color: black;
+            border: 8px solid white;
         }
-        .video{
-            height:100%;
-            width:100%;
-        }
-        .click-btn{
-            height: 5rem;
-            width: 5rem;
-            border-radius: 50%;
-            background-color: whitesmoke;
-            border: 0.1rem solid;
+        #click-picture{
             position: fixed;
-            left: 90vw;
-            top: 60vh;
-            z-index: 10;
-            display:flex;
-            justify-content: center;
-            align-items: center;
+            top: 50vh;
+            right: 6rem;
+            height: 6rem;
+            width: 6rem;
+            border-radius: 50%;
+            background-color: black;
+            border: 8px solid white;
         }
+        #record-div,#click-div{
+            height: 70%;
+            width: 80%;
+            margin: auto;
+            /* background-color: red; */
+            border-radius: 50%;
+        }
+        #record-div
+        {
+            background-color: red;
+        }
+        #click-div{
+            background-color: white;
+        }
+        .video-container
+        {
+            height: 100vh;
+            width: 100vw;
+            background-color: black;
+            overflow: hidden;
+        }
+        video{
+            height: 100%;
+            width: 100%;
+        }
+
+        .filter{
+            border: 1px solid white;
+            height: 20%;
+            background: url(https://images.unsplash.com/photo-1591526038358-0e3d334fb8c0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100);
+            background-blend-mode: color-burn;
+            background-size: cover;
+        }
+        .filter-container{
+            border: 1px solid white;
+            position: fixed;
+            top: 12vh;
+            left: 5.3vw;
+            display: flex;
+            flex-direction: column;
+            height: 60vh;
+            width: 5.5vw;
+        }
+        .recording-animation{
+            animation: shrinkInOut 0.8s infinite;
+        }
+        .capture-animation{
+            animation: shrinkInOut 1s;
+        }
+        @keyframes shrinkInOut {
+            0%{
+                transform: scale(1);
+            }
+            50%{
+                transform: scale(1.2);
+            }
+            100%{
+                transform: scale(1);
+            }
+        }
+        #record-video,#click-picture,.filter-container{
+            z-index: 10;
+        }
+        .zoom{
+            height:15vh;
+            width:4vw;
+            z-index:10;
+            position: fixed;
+            top:12vh;
+            right:6vw;
+            display:flex;
+            flex-direction: column;
+        }
+        .zoom button{
+            color: white;
+            background-color: #222;
+            border: none;
+            outline: none;
+            height: 50%;
+            font-size: 3.5rem;
+        }
+        
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay class="video" ></video>
+    <div class='video-container'>
+        <video autoplay style="transform: scale(1);"></video>
     </div>
-    <div class="record-btn">Record</div>
-    <div class="click-btn">Click</div>
+    <button id='record-video'><div id='record-div'></div></button>
+    <button id='click-picture'><div id='click-div'></div></button>
+    <div class="filter-container">
+        <div style="background-color:#f4a2613d" class="filter"></div>
+        <div style="background-color:#e85d0440" class="filter"></div>
+        <div style="background-color:#ad5d6d7a" class="filter"></div>
+        <div style="background-color:#2195f323" class="filter"></div>
+        <div style="background-color:#4caf4f31" class="filter"></div>
+        <div class="filter"></div>
+    </div>
+    <div class="zoom">
+        <button id="in">+</button>
+        <button id="out">-</button>
+    </div>
     <script>
-        let videoPlayer = document.querySelector("video");
-        let recordBtn = document.querySelector(".record-btn");
-        let captureBtn = document.querySelector(".click-btn");
-        let constraints = {
-            audio:true,
-            video:true
-        }
+        let constraints = {video:true, audio:true};
+        let videoPlayer = document.querySelector('video');
+        let vidRecordBtn = document.querySelector('#record-video');
+        let captureBtn = document.querySelector('#click-picture');
         let mediaRecorder;
-        let state = false;
+        let recordState = false;
         let chunks = [];
-        recordBtn.addEventListener("click",function(){
-            if(mediaRecorder!=undefined){
-                if(state==false){
-                state=true;
-                mediaRecorder.start();
-                recordBtn.innerText = "Recording...";
-            }else{
-                state = false;
-                mediaRecorder.stop();
-                recordBtn.innerText="Record";
-            }
+        let filter='';
+        let currZoom=1;
+        let zoomInBtn=document.querySelector("#in");
+        let zoomOutBtn=document.querySelector("#out");
+         
+        zoomInBtn.addEventListener("click",function(){
+            let vidScale =Number(videoPlayer.style.transform.split("(")[1].split(")")[0]);
+            if(vidScale<3){
+                currZoom=vidScale+0.2;
+                videoPlayer.style.transform=`scale(${currZoom})`;
             }
         })
-        navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(mediaStream){
-            videoPlayer.srcObject=mediaStream;
-            mediaRecorder = new MediaRecorder(mediaStream);
-            mediaRecorder.ondataavailable=function(e){
-                chunks.push(e.data);
+        zoomOutBtn.addEventListener("click",function(){
+            let vidScale =Number(videoPlayer.style.transform.split("(")[1].split(")")[0]);
+            if(vidScale>1){
+                currZoom=vidScale-0.2;
+                videoPlayer.style.transform=`scale(${currZoom})`;
             }
-            mediaRecorder.onstop = function(){
-                let blob = new Blob(chunks,{type:'video/mp4'});
-                chunks=[];
-                let blobURL = URL.createObjectURL(blob);
-                let link = document.createElement('a');
-                link.href = blobURL;
-                link.download='video.mp4';
-                link.click();
-                link.remove();
+        })
 
-            }  
+
+        let allFilters = document.querySelectorAll('.filter');
+        for(let i=0; i<allFilters.length;i++){
+            allFilters[i].addEventListener("click",function(e){
+                filter=e.currentTarget.style.backgroundColor;
+                removeFilter();
+                addFilterToScreen(filter);
+            })
+        }
+        function addFilterToScreen(filterColor){
+            let filter = document.createElement('div');
+            filter.classList.add("on-screen-filter");
+            filter.style.height='100vh';
+            filter.style.width='100vw';
+            filter.style.backgroundColor=`${filterColor}`;
+            filter.style.position='fixed';
+            filter.style.top="0px";
+            document.querySelector('body').appendChild(filter);
+        }
+        function removeFilter(){
+            let el = document.querySelector(".on-screen-filter");
+            if(el){
+                el.remove();
+            }
+        }
+
+        vidRecordBtn.addEventListener("click",function(){
+            let innerDiv = vidRecordBtn.querySelector("#record-div");
+            if(mediaRecorder!=undefined)
+            {
+            if(recordState==false)
+            {
+                recordState=true;
+                currZoom=1;
+                videoPlayer.style.transform=`scale(${currZoom})`;
+                mediaRecorder.start();
+                innerDiv.classList.add("recording-animation");
+            }
+            else{
+                recordState=false;
+                mediaRecorder.stop();
+                innerDiv.classList.remove("recording-animation");
+            }
+        }
+        })
+        navigator.mediaDevices.getUserMedia(constraints).then(function(mediaStream){
+            videoPlayer.srcObject=mediaStream;
+        mediaRecorder = new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable = function(e){
+            chunks.push(e.data)
+        }
+        mediaRecorder.onstop=function()
+        {
+            let blob = new Blob(chunks,{type:'video/mp4'});
+            chunks =[];
+            let blobUrl = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = blobUrl;
+            link.download='video.mp4';
+            link.click();
+            link.remove();
+        }
+
+
         }).catch(function(err){
             console.log(err);
         })
-        captureBtn.addEventListener("click",function(){
-            captureImg();
+        captureBtn.addEventListener('click',function()
+        {
+            let clickDiv = captureBtn.querySelector("#click-div");
+            console.log(('clicked'));
+            clickDiv.classList.add("capture-animation");
+            capture(filter);
+            clickDiv.classList.remove("capture-animation");
         })
-        function captureImg(){
-            let canvas = document.createElement("canvas");
-            canvas.width = videoPlayer.videoWidth;
-            canvas.height=videoPlayer.videoHeight;
-            let tool =  canvas.getContext("2d");
+        function capture(filter)
+        {
+            let c = document.createElement('canvas');
+            c.width = videoPlayer.videoWidth;
+            c.height = videoPlayer.videoHeight;
+            let tool = c.getContext('2d');
+            //shift origin kyuki vo (0,0) pr hota h or zoom center k hisab se hona chaiye
+            tool.translate(c.width/2,c.height/2);
+            //scaling
+            tool.scale(currZoom,currZoom);
+            //shift back to (0,0)
+            tool.translate(-c.width/2,-c.height/2);
+
             tool.drawImage(videoPlayer,0,0);
+            if(filter!=''){
+                tool.fillStyle=filter;
+                tool.fillRect(0,0,c.width,c.height);
+            }
             let link = document.createElement('a');
-            link.download = "image.png";
-            link.href = canvas.toDataURL();
+            link.download = 'image.png';
+            link.href = c.toDataURL();
             link.click();
             link.remove();
             c.remove();
-
         }
     </script>
     
